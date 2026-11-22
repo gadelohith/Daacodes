@@ -1,0 +1,47 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int cross(int a[], int l, int m, int h)
+{
+    int sum = 0, left = -9999, right = -9999;
+
+    for(int i = m; i >= l; i--)
+    {
+        sum += a[i];
+        left = max(left, sum);
+    }
+
+    sum = 0;
+
+    for(int i = m+1; i <= h; i++)
+    {
+        sum += a[i];
+        right = max(right, sum);
+    }
+
+    return left + right;
+}
+
+int maxsub(int a[], int l, int h)
+{
+    if(l == h)
+        return a[l];
+
+    int m = (l + h) / 2;
+
+    int left = maxsub(a, l, m);
+    int right = maxsub(a, m+1, h);
+    int c = cross(a, l, m, h);
+
+    return max(max(left, right), c);
+}
+
+int main()
+{
+    int a[] = {-2,1,-3,4,-1,2,1,-5,4};
+
+    cout << maxsub(a, 0, 8);
+
+    return 0;
+}
